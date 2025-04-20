@@ -1,58 +1,8 @@
-#include <stdio.h> 
+#include <stdio.h>
 
 // Desafio Batalha Naval - MateCheck
 // Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
 // Siga os comentários para implementar cada parte do desafio.
-
-// Constantes para o tamanho do tabuleiro e dos navios
-#define TAMANHO_TABULEIRO 10
-#define TAMANHO_NAVIO 3
-
-// Função para inicializar o tabuleiro com valor 0 (água)
-void inicializarTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
-    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-            tabuleiro[i][j] = 0;
-        }
-    }
-}
-
-// Função que verifica se o navio pode ser posicionado sem sair do tabuleiro ou sobrepor outro
-int podePosicionarNavio(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna, int horizontal) {
-    for (int i = 0; i < TAMANHO_NAVIO; i++) {
-        int l = linha + (horizontal ? 0 : i);
-        int c = coluna + (horizontal ? i : 0);
-
-        if (l >= TAMANHO_TABULEIRO || c >= TAMANHO_TABULEIRO) {
-            return 0; // Fora dos limites
-        }
-
-        if (tabuleiro[l][c] != 0) {
-            return 0; // Já tem navio nessa posição
-        }
-    }
-    return 1;
-}
-
-// Copia o valor 3 nas posições do tabuleiro correspondentes ao navio
-void posicionarNavio(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO], int linha, int coluna, int horizontal) {
-    for (int i = 0; i < TAMANHO_NAVIO; i++) {
-        int l = linha + (horizontal ? 0 : i);
-        int c = coluna + (horizontal ? i : 0);
-        tabuleiro[l][c] = 3;
-    }
-}
-
-// Exibe o tabuleiro completo no console com 0 (água) e 3 (navios)
-void exibirTabuleiro(int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO]) {
-    printf("\n--- TABULEIRO ---\n\n");
-    for (int i = 0; i < TAMANHO_TABULEIRO; i++) {
-        for (int j = 0; j < TAMANHO_TABULEIRO; j++) {
-            printf("%d ", tabuleiro[i][j]);
-        }
-        printf("\n");
-    }
-}
 
 int main() {
     // Nível Novato - Posicionamento dos Navios
@@ -60,35 +10,52 @@ int main() {
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
     // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
 
-    int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
-
-    // Inicializa todas as posições com 0 (água)
-    inicializarTabuleiro(tabuleiro);
-
-    // Coordenadas iniciais dos navios (pré-definidas no código)
-    int linhaNavio1 = 2, colunaNavio1 = 4; // Navio horizontal
-    int linhaNavio2 = 5, colunaNavio2 = 6; // Navio vertical
-
-    // Validação e posicionamento dos navios
-    if (podePosicionarNavio(tabuleiro, linhaNavio1, colunaNavio1, 1)) {
-        posicionarNavio(tabuleiro, linhaNavio1, colunaNavio1, 1);
-    } else {
-        printf("Erro: Navio 1 não pode ser posicionado nas coordenadas informadas.\n");
+    // Criar tabuleiro 10x10 e inicializar com 0 (água)
+    int tabuleiro[10][10];
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            tabuleiro[i][j] = 0;
+        }
     }
 
-    if (podePosicionarNavio(tabuleiro, linhaNavio2, colunaNavio2, 0)) {
-        posicionarNavio(tabuleiro, linhaNavio2, colunaNavio2, 0);
-    } else {
-        printf("Erro: Navio 2 não pode ser posicionado nas coordenadas informadas.\n");
+    // Definição dos navios
+    int tamanho_navio = 3; // Todos os navios terão tamanho 3
+
+    // Posições fixas escolhidas diretamente no código
+
+    // Navio 1 - Horizontal (linha 0, colunas 0 a 2)
+    for (int j = 0; j < tamanho_navio; j++) {
+        tabuleiro[0][j] = 3;
     }
 
-    // Exibe o tabuleiro com os navios
-    exibirTabuleiro(tabuleiro);
+    // Navio 2 - Vertical (coluna 5, linhas 2 a 4)
+    for (int i = 2; i < 2 + tamanho_navio; i++) {
+        tabuleiro[i][5] = 3;
+    }
 
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
     // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
     // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
     // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+
+    // Posicionar Navio 3 - Diagonal principal (linha 6, coluna 6 até 6+2,6+2)
+    for (int i = 0; i < tamanho_navio; i++) {
+        tabuleiro[6 + i][6 + i] = 3;
+    }
+
+    // Posicionar Navio 4 - Diagonal secundária (linha 3, coluna 6 até 3+2,6-2)
+    for (int i = 0; i < tamanho_navio; i++) {
+        tabuleiro[3 + i][6 - i] = 3;
+    }
+
+    // Exibir o tabuleiro completo
+    printf("\nTabuleiro Batalha Naval (0 = água, 3 = navio):\n\n");
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
 
     // Nível Mestre - Habilidades Especiais com Matrizes
     // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
@@ -110,6 +77,64 @@ int main() {
     // 0 0 1 0 0
     // 1 1 1 1 1
     // 0 0 1 0 0
+    // Tamanho da matriz de habilidade
+    int tamanho = 5;
+    int meio = tamanho / 2;
 
-    return 0;
+    // Matriz Cone
+    int cone[5][5] = {0};
+    for (int i = 0; i < tamanho; i++) {
+        for (int j = 0; j < tamanho; j++) {
+            if (j >= meio - i && j <= meio + i && i <= meio)
+                cone[i][j] = 1;
+        }
+    }
+
+    // Matriz Cruz
+    int cruz[5][5] = {0};
+    for (int i = 0; i < tamanho; i++) {
+        for (int j = 0; j < tamanho; j++) {
+            if (i == meio || j == meio)
+                cruz[i][j] = 1;
+        }
+    }
+
+    // Matriz Octaedro
+    int octaedro[5][5] = {0};
+    for (int i = 0; i < tamanho; i++) {
+        for (int j = 0; j < tamanho; j++) {
+            if (abs(i - meio) + abs(j - meio) <= meio)
+                octaedro[i][j] = 1;
+        }
+    }
+
+    // Função para aplicar matriz de habilidade no tabuleiro
+    void aplicarHabilidade(int tab[10][10], int hab[5][5], int origemX, int origemY) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int x = origemX + i - 2;
+                int y = origemY + j - 2;
+                if (x >= 0 && x < 10 && y >= 0 && y < 10 && hab[i][j] == 1 && tab[x][y] == 0) {
+                    tab[x][y] = 5; // Marca área afetada pela habilidade
+                }
+            }
+        }
+    }
+
+    // Aplicando habilidades no tabuleiro
+    aplicarHabilidade(tabuleiro, cone, 1, 1);
+    aplicarHabilidade(tabuleiro, cruz, 5, 5);
+    aplicarHabilidade(tabuleiro, octaedro, 8, 8);
+
+    // Exibir o tabuleiro final com áreas afetadas pelas habilidades
+    printf("\nTabuleiro com Áreas Afetadas (0 = água, 3 = navio, 5 = habilidade):\n\n");
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
+ return 0;
 }
+
